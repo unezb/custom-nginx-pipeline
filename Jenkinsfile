@@ -16,9 +16,7 @@ pipeline {
         
         stage('Build Docker Image') {
             steps {
-                script {
-                    sh "docker build --no-cache -t ${env.DOCKER_IMAGE_NAME}:latest ."
-                }
+                sh "docker build --no-cache -t ${env.DOCKER_IMAGE_NAME}:latest ."
             }
         }
         
@@ -37,22 +35,23 @@ pipeline {
         
         stage('Deploy') {
             steps {
-                sh "docker run -d -p 80:80 ${env.DOCKER_IMAGE_NAME}:latest"
+                sh "docker rm -f nginx || true"
+                sh "docker run -d --name nginx -p 80:80 ${env.DOCKER_IMAGE_NAME}:latest"
             }
         }
     }
-}
 
-post {
-    success {
-        mail to: 'devamudaliyar22@gmail.com',
-             subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-             body: "Build completed successfully."
-    }
-    
-    failure {
-        mail to: 'devamudaliyar22@gmail.com',
-             subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-             body: "Build failed. Check console: ${env.BUILD_URL}"
+    post {
+        success {
+            mail to: 'devamudaliyar22@gmail.com',
+                 subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                 body: "Build completed successfully."
+        }
+        
+        failure {
+            mail to: 'devamudaliyar22@gmail.com',
+                 subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                 body: "Build failed. Check console: ${env.BUILD_URL}"
+        }
     }
 }
