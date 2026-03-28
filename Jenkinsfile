@@ -16,8 +16,7 @@ pipeline {
         
         stage('Build Docker Image') {
             steps {
-                script {
-                    sh "sudo usermod -aG docker $USER && sudo newgrp docker"
+                script {`
                     sh "docker build -t ${env.DOCKER_IMAGE_NAME}:latest ."
                 }
             }
