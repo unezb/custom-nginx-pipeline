@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_HUB_CREDENTIALS_ID = 'dockerhub'
         DOCKER_HUB_REGISTRY_URL = 'https://index.docker.io/v1/'
-        DOCKER_IMAGE_NAME = 'devamu/my-nginx-custom'
+        DOCKER_IMAGE_NAME = 'devamu/my-nginx-custom-app'
     }
     
     stages {
